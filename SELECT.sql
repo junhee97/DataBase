@@ -49,3 +49,4 @@ select * from buytbl where groupname in ('서적','전자');
 
 -- 6
 select * from buytbl where prodname = '책' or trim(userid) like '%W';
+--

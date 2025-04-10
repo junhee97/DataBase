@@ -24,21 +24,17 @@ member_id number
 
 -- 1번 문제
 alter table tbl_member add constraint pk_member_id primary key(member_id);
-desc tbl_member;
 
 -- 2번 문제
 alter table tbl_book add constraint pk_book_code primary key(book_code);
-desc tbl_book;
 
 -- 3번 문제
 alter table tbl_rental add constraint fk_book_code foreign key(book_code)
 references tbl_book(book_code) on delete cascade;
-desc tbl_rental;
 
 -- 4번 문제
 alter table tbl_rental add constraint fk_member_id foreign key(member_id)
 references tbl_member(member_id) on delete cascade;
-desc tbl_rental;
 
 -- 5번 문제
 insert into tbl_member values(111, 'aaa', '111', '일반', '대구', '010-111-2222');
@@ -64,16 +60,50 @@ insert into tbl_rental values(3, 1012, 333);
 select * from tbl_rental;
 
 -- 6번 문제
-select constraint_name, constraint_type, search_condition, r_constraint_name
+select constraint_name, constraint_type, r_constraint_name, table_name
 from user_constraints
 where table_name = 'TBL_MEMBER';
 
 -- 6번 문제
-select constraint_name, constraint_type, search_condition, r_constraint_name
+select constraint_name, constraint_type, r_constraint_name, table_name
 from user_constraints
 where table_name = 'TBL_BOOK';
 
 -- 6번 문제
-select constraint_name, constraint_type, search_condition, r_constraint_name
+select constraint_name, constraint_type, r_constraint_name, table_name
 from user_constraints
 where table_name = 'TBL_RENTAL';
+
+-- 7번 문제
+create index fk_member_id on tbl_rental(member_id);
+create index fk_book_code on tbl_rental(book_code);
+
+select index_name, column_name
+from user_ind_columns
+where table_name = 'TBL_RENTAL';
+
+-- 8번 문제
+create view ShowRental_view as
+select r.rental_id, m.member_name, b.book_name
+from tbl_rental r
+inner join tbl_member m
+on r.member_id = m.member_id
+inner join tbl_book b
+on r.book_code = b.book_code;
+
+select * from ShowRental_view;
+
+-- 서술형
+CREATE TABLE tbl_review(
+review_id number not null primary key,
+book_code number,
+member_id number,
+rating number,
+review_text VARCHAR2(255)
+);
+
+alter table tbl_review add constraint fk_member_id_review foreign key(member_id)
+references tbl_member(member_id) on delete cascade;
+
+alter table tbl_review add constraint fk_book_code_review foreign key(book_code)
+references tbl_book(book_code) on delete cascade;

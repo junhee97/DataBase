@@ -95,15 +95,23 @@ select * from ShowRental_view;
 
 -- ¼­¼úÇü
 CREATE TABLE tbl_review(
-review_id number not null primary key,
+review_id number,
 book_code number,
 member_id number,
 rating number,
 review_text VARCHAR2(255)
 );
 
+drop table tbl_review;
+
+alter table tbl_review add constraint pk_review_id primary key(review_id);
+
 alter table tbl_review add constraint fk_member_id_review foreign key(member_id)
 references tbl_member(member_id) on delete cascade;
 
 alter table tbl_review add constraint fk_book_code_review foreign key(book_code)
 references tbl_book(book_code) on delete cascade;
+
+select constraint_name, constraint_type, r_constraint_name, table_name
+from user_constraints
+where table_name = 'TBL_REVIEW';

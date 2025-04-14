@@ -9,7 +9,7 @@ member_phone varchar2(45)
 
 create table tbl_book (
 book_code number,
-classification_id number,
+classification_id number not null,
 book_author varchar2(45),
 book_name varchar2(45),
 publisher varchar2(45),
